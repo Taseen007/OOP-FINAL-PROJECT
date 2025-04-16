@@ -63,13 +63,12 @@ public class MainMenu {
             ConsoleUtil.clearScreen();
             ConsoleUtil.printHeader("Profile Status");
             int choice = ConsoleUtil.showMenu("Choose an option",
-                    List.of("View Profile", "Update Profile", "Create New Profile", "Back"));
+                    List.of("View Profile", "Update Profile", "Back"));
 
             switch (choice) {
                 case 0 -> ConsoleUtil.printInfo(userProfile.toString());
                 case 1 -> updateProfile();
-                case 2 -> createNewProfile();
-                case 3 -> {
+                case 2 -> {
                     return; // Back to main menu
                 }
                 default -> ConsoleUtil.printError("Invalid choice. Please try again.");
@@ -80,13 +79,6 @@ public class MainMenu {
     private void updateProfile() {
         userProfile = ProfileManager.updateProfile(userProfile, dataStore);
         mealPlanner.setStrategy(mealPlanner.getCurrentStrategyName());
-    }
-
-    private void createNewProfile() {
-        if (ConsoleUtil.readBoolean("Are you sure you want to create a new profile? This will overwrite the existing profile.")) {
-            userProfile = ProfileManager.createNewProfile(dataStore);
-            mealPlanner.setStrategy(mealPlanner.getCurrentStrategyName());
-        }
     }
 
     private void calculateBmi() {
