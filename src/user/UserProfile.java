@@ -1,6 +1,7 @@
 package user;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class UserProfile implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -9,14 +10,16 @@ public class UserProfile implements Serializable {
     private int age;
     private double heightCm;
     private double weightKg;
-    private String goal; // e.g., "lose weight", "build muscle", etc.
+    private String goal;
+    private String passwordHash; // Store hashed password
 
-    public UserProfile(String name, int age, double heightCm, double weightKg, String goal) {
+    public UserProfile(String name, int age, double heightCm, double weightKg, String goal, String passwordHash) {
         this.name = name;
         this.age = age;
         this.heightCm = heightCm;
         this.weightKg = weightKg;
         this.goal = goal;
+        this.passwordHash = passwordHash;
     }
 
     // Getters and setters
@@ -60,22 +63,12 @@ public class UserProfile implements Serializable {
         this.goal = goal;
     }
 
-    /**
-     * Update all fields from another UserProfile
-     *
-     * @param other UserProfile to copy data from
-     * @throws IllegalArgumentException if other is null
-     */
-    public void updateFrom(UserProfile other) {
-        if (other == null) {
-            throw new IllegalArgumentException("Source profile cannot be null");
-        }
-        
-        this.name = other.name;
-        this.age = other.age;
-        this.heightCm = other.heightCm;
-        this.weightKg = other.weightKg;
-        this.goal = other.goal;
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     @Override
@@ -87,5 +80,18 @@ public class UserProfile implements Serializable {
                 ", weightKg=" + weightKg +
                 ", goal='" + goal + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserProfile that = (UserProfile) o;
+        return name.equals(that.name) && passwordHash.equals(that.passwordHash);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, passwordHash);
     }
 }
